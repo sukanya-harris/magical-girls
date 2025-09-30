@@ -102,6 +102,13 @@ for series in series_list:
     if not content:
         print(f"Could not find content div for {series['name']}")
         continue
+
+    """ # Example: scrape only “Main Characters” section
+    content = soup.find("span", {"id": "Main_Characters"})  # heading id
+    if content:
+        main_section = content.find_parent("h2").find_next_sibling("ul")  # usually a <ul> list
+        links = main_section.find_all("a")
+    """
     
     links = content.find_all("a")
     character_urls = []
