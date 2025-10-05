@@ -104,7 +104,7 @@ def scrape_character_page(url, series_name):
 
     # Powers
     powers = []
-    power_labels = ["Power", "Powers", "Abilities", "Skills", "Attacks", "Techniques"]
+    power_labels = ["Power", "Powers", "Abilities", "Skills", "Attacks", "Techniques", "Weapon"]
     for label in power_labels:
         found = soup.find("h3", string=re.compile(label, re.IGNORECASE))
         if found:

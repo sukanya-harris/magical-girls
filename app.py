@@ -80,14 +80,25 @@ for _, row in filtered_df.iterrows():
     cols = st.columns([1, 2])
     
     # Image
-    img_url = row.get("Image URL", "")
-    if img_url and img_url.strip().startswith("http"):
-        try:
-            cols[0].image(img_url, width=300)
-        except:
-            cols[0].text("No image")
-    else:
-        cols[0].text("No image")
+    with cols[0]:
+        img_url = str(row.get("Image URL", "")).strip()
+        # Skip NaN / empty
+        if img_url.lower() != "nan" and img_url != "":
+            # Force HTTPS
+            if img_url.startswith("http://"):
+                img_url = img_url.replace("http://", "https://")
+
+            # Check if URL is accessible
+            try:
+                r = requests.head(img_url, timeout=5)
+                if r.status_code == 200:
+                    st.image(img_url, width=80)  # WebP, PNG, JPG all supported
+                else:
+                    st.write("Image not accessible")
+            except:
+                st.write("Image not accessible")
+        else:
+            st.write("No image")
 
     # Name + Series
     cols[1].markdown(f"**{row['Name']}**")
